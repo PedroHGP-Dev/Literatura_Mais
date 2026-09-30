@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import '../../../core/theme/colors.dart';
 import '../../../core/services/book_cover_service.dart';
 
@@ -7,13 +9,25 @@ class Obra {
   final String autor;
   final String seculo;
   final String movimento;
+  final String resumo;
 
   const Obra({
     required this.titulo,
     required this.autor,
     required this.seculo,
     required this.movimento,
+    required this.resumo,
   });
+
+  factory Obra.fromJson(Map<String, dynamic> json) {
+    return Obra(
+      titulo: json['titulo'] ?? '',
+      autor: json['autor'] ?? '',
+      seculo: json['seculo'] ?? '',
+      movimento: json['movimento'] ?? '',
+      resumo: json['resumo'] ?? '',
+    );
+  }
 }
 
 class ObrasPage extends StatefulWidget {
@@ -24,47 +38,63 @@ class ObrasPage extends StatefulWidget {
 }
 
 class _ObrasPageState extends State<ObrasPage> {
-  final List<Obra> _obras = const [
-    Obra(
-      titulo: 'Dom Casmurro',
-      autor: 'Machado de Assis',
-      seculo: 'SEC. XIX',
-      movimento: 'Realismo',
-    ),
-    Obra(
-      titulo: 'Memórias Póstumas de Brás Cubas',
-      autor: 'Machado de Assis',
-      seculo: 'SEC. XIX',
-      movimento: 'Realismo',
-    ),
-    Obra(
-      titulo: 'O Cortiço',
-      autor: 'Aluísio Azevedo',
-      seculo: 'SEC. XIX',
-      movimento: 'Naturalismo',
-    ),
-    Obra(
-      titulo: 'Vidas Secas',
-      autor: 'Graciliano Ramos',
-      seculo: 'SEC. XX',
-      movimento: 'Modernismo',
-    ),
-    Obra(
-      titulo: 'Macunaíma',
-      autor: 'Mário de Andrade',
-      seculo: 'SEC. XX',
-      movimento: 'Modernismo',
-    ),
-    Obra(
-      titulo: 'A Hora da Estrela',
-      autor: 'Clarice Lispector',
-      seculo: 'SEC. XX',
-      movimento: 'Modernismo',
-    ),
+  List<Obra> _todasObras = [];
+  String _movimentoSelecionado = 'Todos';
+  bool _isLoading = true;
+
+  final List<String> _movimentosFiltro = const [
+    'Todos',
+    'Quinhentismo',
+    'Humanismo',
+    'Barroco',
+    'Arcadismo',
+    'Romantismo',
+    'Naturalismo',
+    'Realismo',
+    'Pré-Modernismo',
+    'Modernismo',
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _carregarObras();
+  }
+
+  Future<void> _carregarObras() async {
+    try {
+      final String response = await rootBundle.loadString(
+        'assets/data/obras.json',
+      );
+      final List<dynamic> data = json.decode(response);
+      setState(() {
+        _todasObras = data.map((item) => Obra.fromJson(item)).toList();
+        _isLoading = false;
+      });
+    } catch (_) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  List<Obra> get _obrasFiltradas {
+    if (_movimentoSelecionado == 'Todos') {
+      return _todasObras;
+    }
+    return _todasObras
+        .where(
+          (o) =>
+              o.movimento.toLowerCase().trim() ==
+              _movimentoSelecionado.toLowerCase().trim(),
+        )
+        .toList();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final obrasExibidas = _obrasFiltradas;
+
     return Scaffold(
       backgroundColor: AppColors.colorScaffold,
       body: SafeArea(
@@ -86,7 +116,7 @@ class _ObrasPageState extends State<ObrasPage> {
                     ),
                   ),
                   Text(
-                    '${_obras.length} OBRAS',
+                    '${obrasExibidas.length} OBRAS',
                     style: const TextStyle(
                       color: AppColors.accent,
                       fontSize: 12,
@@ -95,15 +125,73 @@ class _ObrasPageState extends State<ObrasPage> {
                   ),
                 ],
               ),
+              const SizedBox(height: 12),
+
+              Wrap(
+                spacing: 8.0,
+                runSpacing: 8.0,
+                children: _movimentosFiltro.map((movimento) {
+                  final bool isSelected = _movimentoSelecionado == movimento;
+                  return ChoiceChip(
+                    label: Text(
+                      movimento,
+                      style: TextStyle(
+                        color: isSelected
+                            ? Colors.white
+                            : AppColors.textSecondary,
+                        fontSize: 12,
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                      ),
+                    ),
+                    selected: isSelected,
+                    selectedColor: AppColors.accent,
+                    backgroundColor: AppColors.secondary,
+                    showCheckmark: false,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    visualDensity: VisualDensity.compact,
+                    side: BorderSide(
+                      color: isSelected ? AppColors.accent : Colors.white12,
+                    ),
+                    onSelected: (selected) {
+                      if (selected) {
+                        setState(() {
+                          _movimentoSelecionado = movimento;
+                        });
+                      }
+                    },
+                  );
+                }).toList(),
+              ),
+
               const SizedBox(height: 16),
+
               Expanded(
-                child: ListView.builder(
-                  itemCount: _obras.length,
-                  itemBuilder: (context, index) {
-                    final obra = _obras[index];
-                    return _buildObraCard(obra);
-                  },
-                ),
+                child: _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.accent,
+                        ),
+                      )
+                    : obrasExibidas.isEmpty
+                    ? const Center(
+                        child: Text(
+                          'Nenhuma obra encontrada para este movimento.',
+                          style: TextStyle(color: AppColors.textSecondary),
+                        ),
+                      )
+                    : RefreshIndicator(
+                        color: AppColors.accent,
+                        backgroundColor: AppColors.secondary,
+                        onRefresh: _carregarObras,
+                        child: ListView.builder(
+                          itemCount: obrasExibidas.length,
+                          itemBuilder: (context, index) {
+                            return _buildObraCard(obrasExibidas[index]);
+                          },
+                        ),
+                      ),
               ),
             ],
           ),
@@ -122,6 +210,7 @@ class _ObrasPageState extends State<ObrasPage> {
         border: Border.all(color: Colors.white12),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FutureBuilder<String?>(
             future: BookCoverService.fetchCoverUrl(obra.titulo, obra.autor),
@@ -129,7 +218,7 @@ class _ObrasPageState extends State<ObrasPage> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Container(
                   width: 70,
-                  height: 100,
+                  height: 105,
                   decoration: BoxDecoration(
                     color: Colors.white10,
                     borderRadius: BorderRadius.circular(8),
@@ -155,7 +244,7 @@ class _ObrasPageState extends State<ObrasPage> {
                   child: Image.network(
                     snapshot.data!,
                     width: 70,
-                    height: 100,
+                    height: 105,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return _buildCoverPlaceholder();
@@ -167,7 +256,7 @@ class _ObrasPageState extends State<ObrasPage> {
               return _buildCoverPlaceholder();
             },
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,25 +292,35 @@ class _ObrasPageState extends State<ObrasPage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 4),
                 Text(
                   obra.titulo,
                   style: const TextStyle(
                     color: AppColors.textPrimary,
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                     fontStyle: FontStyle.italic,
                   ),
                 ),
-                const SizedBox(height: 4),
                 Text(
                   obra.autor,
                   style: const TextStyle(
                     color: AppColors.textSecondary,
-                    fontSize: 13,
+                    fontSize: 12,
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 6),
+                Text(
+                  obra.resumo,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: AppColors.textSecondary.withOpacity(0.8),
+                    fontSize: 11.5,
+                    height: 1.3,
+                  ),
+                ),
+                const SizedBox(height: 8),
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
@@ -238,11 +337,11 @@ class _ObrasPageState extends State<ObrasPage> {
                           'VER ANÁLISE',
                           style: TextStyle(
                             color: AppColors.accent,
-                            fontSize: 12,
+                            fontSize: 11,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: 4),
+                        SizedBox(width: 2),
                         Icon(
                           Icons.chevron_right,
                           color: AppColors.accent,
@@ -263,7 +362,7 @@ class _ObrasPageState extends State<ObrasPage> {
   Widget _buildCoverPlaceholder() {
     return Container(
       width: 70,
-      height: 100,
+      height: 105,
       decoration: BoxDecoration(
         color: Colors.white10,
         borderRadius: BorderRadius.circular(8),

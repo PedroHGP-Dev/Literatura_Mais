@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/colors.dart';
+import '../perfil/perfil_page.dart';
 
 class QuestoesPage extends StatelessWidget {
   const QuestoesPage({super.key});
@@ -156,17 +157,17 @@ class QuestoesPage extends StatelessWidget {
             children: [
               _buildRankingRow(
                 '1º',
-                'Rodolfo de Souza',
+                PerfilPage.nome,
                 '2250 pontos',
-                'assets/images/rodolfo.png',
                 isGold: true,
+                useBytesImage: true,
               ),
               const Divider(color: Colors.white12, height: 1),
               _buildRankingRow(
                 '2º',
                 'Luana Guimarães',
                 '2100 pontos',
-                'assets/images/luana.png',
+                imgPath: 'assets/images/luana.png',
               ),
             ],
           ),
@@ -266,10 +267,19 @@ class QuestoesPage extends StatelessWidget {
   Widget _buildRankingRow(
     String position,
     String name,
-    String points,
-    String imgPath, {
+    String points, {
+    String? imgPath,
     bool isGold = false,
+    bool useBytesImage = false,
   }) {
+    ImageProvider avatarImage;
+
+    if (useBytesImage && PerfilPage.imagemBytes != null) {
+      avatarImage = MemoryImage(PerfilPage.imagemBytes!);
+    } else {
+      avatarImage = AssetImage(imgPath ?? 'assets/images/rodolfo.png');
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
       child: Row(
@@ -288,7 +298,7 @@ class QuestoesPage extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          CircleAvatar(radius: 16, backgroundImage: AssetImage(imgPath)),
+          CircleAvatar(radius: 16, backgroundImage: avatarImage),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

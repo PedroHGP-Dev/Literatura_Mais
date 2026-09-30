@@ -24,21 +24,25 @@ class _HomePageState extends State<HomePage> {
   ];
 
   void _abrirPerfil() {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (context) => const PerfilPage()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const PerfilPage()))
+        .then((_) {
+          setState(() {});
+        });
   }
 
   @override
   Widget build(BuildContext context) {
+    final primeiroNome = PerfilPage.nome.trim().split(' ').first;
+
     return Scaffold(
       backgroundColor: AppColors.colorScaffold,
       appBar: AppBar(
         backgroundColor: AppColors.colorAppBar,
         elevation: 0,
-        title: const Text(
-          'Vamos estudar, Rodolfo?',
-          style: TextStyle(
+        title: Text(
+          'Vamos estudar, $primeiroNome?',
+          style: const TextStyle(
             color: AppColors.textPrimary,
             fontSize: 18,
             fontStyle: FontStyle.italic,
@@ -61,9 +65,11 @@ class _HomePageState extends State<HomePage> {
                   shape: BoxShape.circle,
                   border: Border.all(color: AppColors.avatarBorder, width: 1.0),
                 ),
-                child: const CircleAvatar(
+                child: CircleAvatar(
                   radius: 18,
-                  backgroundImage: AssetImage('assets/images/rodolfo.png'),
+                  backgroundImage: PerfilPage.imagemBytes != null
+                      ? MemoryImage(PerfilPage.imagemBytes!) as ImageProvider
+                      : const AssetImage('assets/images/rodolfo.png'),
                 ),
               ),
             ),

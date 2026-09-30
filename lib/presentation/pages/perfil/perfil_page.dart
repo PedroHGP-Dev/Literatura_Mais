@@ -1,8 +1,195 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../core/theme/colors.dart';
 
-class PerfilPage extends StatelessWidget {
+class PerfilPage extends StatefulWidget {
   const PerfilPage({super.key});
+
+  static String nome = 'Rodolfo de Souza';
+  static String bio =
+      'Apaixonado pela literatura brasileira e estudante focado no ENEM.';
+  static Uint8List? imagemBytes;
+
+  @override
+  State<PerfilPage> createState() => _PerfilPageState();
+}
+
+class _PerfilPageState extends State<PerfilPage> {
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _selecionarFoto(StateSetter setModalState) async {
+    final XFile? pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 85,
+    );
+
+    if (pickedFile != null) {
+      final bytes = await pickedFile.readAsBytes();
+      setState(() {
+        PerfilPage.imagemBytes = bytes;
+      });
+      setModalState(() {});
+    }
+  }
+
+  void _abrirModalEdicao() {
+    final nomeController = TextEditingController(text: PerfilPage.nome);
+    final bioController = TextEditingController(text: PerfilPage.bio);
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.colorScaffold,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                top: 24,
+                left: 20,
+                right: 20,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'EDITAR PERFIL',
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.1,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: Stack(
+                      children: [
+                        Container(
+                          width: 90,
+                          height: 90,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: AppColors.avatarBorder,
+                              width: 2.0,
+                            ),
+                            image: PerfilPage.imagemBytes != null
+                                ? DecorationImage(
+                                    image: MemoryImage(PerfilPage.imagemBytes!),
+                                    fit: BoxFit.cover,
+                                  )
+                                : const DecorationImage(
+                                    image: AssetImage(
+                                      'assets/images/rodolfo.png',
+                                    ),
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: InkWell(
+                            onTap: () => _selecionarFoto(setModalState),
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: const BoxDecoration(
+                                color: AppColors.accent,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.photo_camera,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: nomeController,
+                    style: const TextStyle(color: AppColors.textPrimary),
+                    decoration: InputDecoration(
+                      labelText: 'Nome',
+                      labelStyle: const TextStyle(
+                        color: AppColors.textSecondary,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Colors.white24),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: AppColors.accent),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: bioController,
+                    maxLines: 3,
+                    style: const TextStyle(color: AppColors.textPrimary),
+                    decoration: InputDecoration(
+                      labelText: 'Bio',
+                      labelStyle: const TextStyle(
+                        color: AppColors.textSecondary,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Colors.white24),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: AppColors.accent),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          PerfilPage.nome = nomeController.text;
+                          PerfilPage.bio = bioController.text;
+                        });
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.accent,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        'SALVAR',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,25 +217,59 @@ class PerfilPage extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(3),
+              width: 130,
+              height: 130,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(color: AppColors.avatarBorder, width: 2.0),
-              ),
-              child: const CircleAvatar(
-                radius: 65,
-                backgroundImage: AssetImage('assets/images/rodolfo.png'),
+                image: PerfilPage.imagemBytes != null
+                    ? DecorationImage(
+                        image: MemoryImage(PerfilPage.imagemBytes!),
+                        fit: BoxFit.cover,
+                      )
+                    : const DecorationImage(
+                        image: AssetImage('assets/images/rodolfo.png'),
+                        fit: BoxFit.cover,
+                      ),
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Rodolfo de Souza',
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 24,
-                fontStyle: FontStyle.italic,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  PerfilPage.nome,
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 24,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.edit,
+                    color: AppColors.accent,
+                    size: 20,
+                  ),
+                  onPressed: _abrirModalEdicao,
+                ),
+              ],
             ),
+            if (PerfilPage.bio.isNotEmpty) ...[
+              const SizedBox(height: 4),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Text(
+                  PerfilPage.bio,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 14,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+            ],
             const SizedBox(height: 8),
             const Text(
               'Aprendiz',
@@ -71,13 +292,29 @@ class PerfilPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
-                  _StatItem(emoji: '🔥', text: '7 dias'),
+                  _StatItem(
+                    icon: Icons.local_fire_department,
+                    iconColor: Colors.orange,
+                    text: '7 dias',
+                  ),
                   SizedBox(height: 12),
-                  _StatItem(emoji: '⭐', text: '2.250 pts'),
+                  _StatItem(
+                    icon: Icons.star,
+                    iconColor: Colors.amber,
+                    text: '2.250 pts',
+                  ),
                   SizedBox(height: 12),
-                  _StatItem(emoji: '📚', text: '12 obras'),
+                  _StatItem(
+                    icon: Icons.menu_book,
+                    iconColor: AppColors.accent,
+                    text: '12 obras',
+                  ),
                   SizedBox(height: 12),
-                  _StatItem(emoji: '🏆', text: '7º lugar'),
+                  _StatItem(
+                    icon: Icons.emoji_events,
+                    iconColor: Colors.amber,
+                    text: '7º lugar',
+                  ),
                 ],
               ),
             ),
@@ -102,12 +339,12 @@ class PerfilPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  _BadgeCard(
+                  const _BadgeCard(
                     title: 'BOCA DO INFERNO',
                     subtitle: 'Por completar o módulo de Barroco.',
                   ),
                   const SizedBox(height: 12),
-                  _BadgeCard(
+                  const _BadgeCard(
                     title: 'SEMANA DE 22',
                     subtitle: 'Por estudar todos os autores do Modernismo.',
                   ),
@@ -146,22 +383,28 @@ class PerfilPage extends StatelessWidget {
 }
 
 class _StatItem extends StatelessWidget {
-  final String emoji;
+  final IconData icon;
+  final Color iconColor;
   final String text;
 
-  const _StatItem({required this.emoji, required this.text});
+  const _StatItem({
+    required this.icon,
+    required this.iconColor,
+    required this.text,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(emoji, style: const TextStyle(fontSize: 22)),
-        const SizedBox(width: 12),
+        Icon(icon, color: iconColor, size: 22),
+        const SizedBox(width: 10),
         Text(
           text,
           style: const TextStyle(
             color: AppColors.textPrimary,
-            fontSize: 22,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
             fontStyle: FontStyle.italic,
           ),
         ),

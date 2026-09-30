@@ -1,0 +1,170 @@
+[
+    {
+        "titulo": "Auto da Barca do Inferno",
+        "autor": "Gil Vicente",
+        "seculo": "SEC. XVI",
+        "movimento": "Humanismo",
+        "resumo": "Peça teatral que apresenta personagens de diferentes classes sociais sendo julgados após a morte, criticando os vícios e a hipocrisia da sociedade."
+    },
+    {
+        "titulo": "O Sermão de Santo Antônio aos Peixes",
+        "autor": "Padre Antônio Vieira",
+        "seculo": "SEC. XVII",
+        "movimento": "Barroco",
+        "resumo": "Utiliza os peixes como metáfora para criticar os comportamentos humanos, denunciando injustiças, vaidade e exploração."
+    },
+    {
+        "titulo": "História do Futuro",
+        "autor": "Padre Antônio Vieira",
+        "seculo": "SEC. XVII",
+        "movimento": "Barroco",
+        "resumo": "Obra em que Vieira apresenta suas interpretações religiosas e proféticas sobre o futuro de Portugal e do mundo, utilizando argumentos teológicos."
+    },
+    {
+        "titulo": "Marília de Dirceu",
+        "autor": "Tomás Antônio Gonzaga",
+        "seculo": "SEC. XVIII",
+        "movimento": "Arcadismo",
+        "resumo": "Obra poética que retrata o amor idealizado entre Dirceu e Marília, valorizando a simplicidade da vida campestre e os sentimentos amorosos."
+    },
+    {
+        "titulo": "O Uraguai",
+        "autor": "Basílio da Gama",
+        "seculo": "SEC. XVIII",
+        "movimento": "Arcadismo",
+        "resumo": "Poema épico que narra os conflitos entre portugueses, espanhóis e indígenas durante as disputas territoriais na região das Missões."
+    },
+    {
+        "titulo": "A Moreninha",
+        "autor": "Joaquim Manuel de Macedo",
+        "seculo": "SEC. XIX",
+        "movimento": "Romantismo",
+        "resumo": "Romance que conta a história de Augusto e Carolina, dois jovens que descobrem uma ligação amorosa iniciada na infância."
+    },
+    {
+        "titulo": "Iracema",
+        "autor": "José de Alencar",
+        "seculo": "SEC. XIX",
+        "movimento": "Romantismo",
+        "resumo": "Narra o amor entre a indígena Iracema e o português Martim, utilizando elementos da natureza e da cultura indígena para representar a formação do povo brasileiro."
+    },
+    {
+        "titulo": "O Guarani",
+        "autor": "José de Alencar",
+        "seculo": "SEC. XIX",
+        "movimento": "Romantismo",
+        "resumo": "Conta a história de Peri, um indígena que protege a família de Dom Antônio de Mariz e desenvolve uma relação de amor e lealdade com Cecília."
+    },
+    {
+        "titulo": "Senhora",
+        "autor": "José de Alencar",
+        "seculo": "SEC. XIX",
+        "movimento": "Romantismo",
+        "resumo": "Retrata o relacionamento entre Aurélia Camargo e Fernando Seixas, abordando o casamento por interesse e as relações entre amor, dinheiro e sociedade."
+    },
+    {
+        "titulo": "Memórias de um Sargento de Milícias",
+        "autor": "Manuel Antônio de Almeida",
+        "seculo": "SEC. XIX",
+        "movimento": "Romantismo",
+        "resumo": "Acompanha as aventuras de Leonardo, um jovem malandro que vive situações cômicas na sociedade carioca do período colonial."
+    },
+    {
+        "titulo": "O Navio Negreiro",
+        "autor": "Castro Alves",
+        "seculo": "SEC. XIX",
+        "movimento": "Romantismo",
+        "resumo": "Poema que denuncia a violência da escravidão e a crueldade do tráfico de pessoas africanas, tornando-se um dos principais símbolos da poesia abolicionista brasileira."
+    },
+    {
+        "titulo": "O Cortiço",
+        "autor": "Aluísio Azevedo",
+        "seculo": "SEC. XIX",
+        "movimento": "Naturalismo",
+        "resumo": "Retrata o cotidiano e a degradação humana dos moradores de uma habitação coletiva no Rio de Janeiro, explorando a influência do ambiente e das condições sociais."
+    },
+    {
+        "titulo": "Bom-Crioulo",
+        "autor": "Adolfo Caminha",
+        "seculo": "SEC. XIX",
+        "movimento": "Naturalismo",
+        "resumo": "Narra a história de Amaro, um marinheiro negro que vive um relacionamento com Aleixo, abordando preconceitos, repressão social e conflitos humanos."
+    },
+    {
+        "titulo": "Dom Casmurro",
+        "autor": "Machado de Assis",
+        "seculo": "SEC. XIX",
+        "movimento": "Realismo",
+        "resumo": "Bento Santiago relata sua vida e sua obsessão pela dúvida sobre uma possível infidelidade de Capitu com seu melhor amigo Escobar."
+    },
+    {
+        "titulo": "Memórias Póstumas de Brás Cubas",
+        "autor": "Machado de Assis",
+        "seculo": "SEC. XIX",
+        "movimento": "Realismo",
+        "resumo": "Narrado por um defunto autor, o livro ironiza a sociedade brasileira ao apresentar as memórias de um homem que reflete sobre sua vida sem grandes realizações."
+    },
+    {
+        "titulo": "O Ateneu",
+        "autor": "Raul Pompeia",
+        "seculo": "SEC. XIX",
+        "movimento": "Realismo",
+        "resumo": "Relata as experiências de Sérgio em um internato, revelando relações de poder, hipocrisia e conflitos psicológicos no ambiente escolar."
+    },
+    {
+        "titulo": "Os Sertões",
+        "autor": "Euclides da Cunha",
+        "seculo": "SEC. XX",
+        "movimento": "Pré-Modernismo",
+        "resumo": "Analisa a Guerra de Canudos, apresentando as características geográficas, sociais e humanas do sertão brasileiro e denunciando as contradições da sociedade da época."
+    },
+    {
+        "titulo": "Triste Fim de Policarpo Quaresma",
+        "autor": "Lima Barreto",
+        "seculo": "SEC. XX",
+        "movimento": "Pré-Modernismo",
+        "resumo": "Conta a história de um funcionário público extremamente nacionalista que tenta transformar o Brasil, mas acaba enfrentando a burocracia e as contradições sociais."
+    },
+    {
+        "titulo": "Urupês",
+        "autor": "Monteiro Lobato",
+        "seculo": "SEC. XX",
+        "movimento": "Pré-Modernismo",
+        "resumo": "Coletânea de contos que retrata a vida rural brasileira e apresenta Jeca Tatu, personagem que simboliza as dificuldades enfrentadas pelo homem do campo."
+    },
+    {
+        "titulo": "Amar, Verbo Intransitivo",
+        "autor": "Mário de Andrade",
+        "seculo": "SEC. XX",
+        "movimento": "Modernismo",
+        "resumo": "Conta a história de uma professora alemã contratada para ensinar um jovem da elite paulistana sobre o amor, abordando costumes sociais e conflitos familiares."
+    },
+    {
+        "titulo": "Macunaíma",
+        "autor": "Mário de Andrade",
+        "seculo": "SEC. XX",
+        "movimento": "Modernismo",
+        "resumo": "Acompanha as aventuras de um herói sem caráter que percorre o Brasil, misturando mitos indígenas, folclore e críticas à identidade nacional."
+    },
+    {
+        "titulo": "Vidas Secas",
+        "autor": "Graciliano Ramos",
+        "seculo": "SEC. XX",
+        "movimento": "Modernismo",
+        "resumo": "Retrata a luta de uma família de retirantes nordestinos contra a seca, a pobreza e a exploração social, evidenciando as dificuldades da vida no sertão."
+    },
+    {
+        "titulo": "Capitães da Areia",
+        "autor": "Jorge Amado",
+        "seculo": "SEC. XX",
+        "movimento": "Modernismo",
+        "resumo": "Conta a história de um grupo de crianças e adolescentes em situação de abandono que vive nas ruas de Salvador, enfrentando desigualdade e exclusão social."
+    },
+    {
+        "titulo": "A Hora da Estrela",
+        "autor": "Clarice Lispector",
+        "seculo": "SEC. XX",
+        "movimento": "Modernismo",
+        "resumo": "Conta a história de Macabéa, uma jovem nordestina que vive no Rio de Janeiro e enfrenta a pobreza, a invisibilidade social e a solidão."
+    }
+]
